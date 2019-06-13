@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
+import PropTypes from 'prop-types';
 import BackgroundImage from '../assets/hero.jpg';
 
 const StyledImageBackground = styled.ImageBackground`
@@ -39,6 +40,25 @@ const SearchInput = styled.TextInput`
 `;
 
 class Hero extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      inputValue: '',
+    };
+
+    this.handleInput = this.handleInput.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleInput(value) {
+    this.setState({ inputValue: value });
+  }
+
+  handleSubmit() {
+    this.props.onSubmit(this.state.inputValue);
+  }
+
   render() {
     return (
       <StyledImageBackground source={BackgroundImage}>
@@ -47,11 +67,21 @@ class Hero extends React.Component {
           <SubTitle>
             Type any space-related phrase and explore the universe of photos
           </SubTitle>
-          <SearchInput />
+          <SearchInput
+            value={this.state.inputValue}
+            onChangeText={this.handleInput}
+            onEndEditing={this.handleSubmit}
+            keyboardAppearance="dark"
+            autoCorrect={false}
+          />
         </StyledView>
       </StyledImageBackground>
     );
   }
 }
+
+Hero.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};
 
 export default Hero;
