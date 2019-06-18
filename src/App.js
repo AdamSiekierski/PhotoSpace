@@ -1,5 +1,6 @@
 import React from 'react';
 import { StatusBar, TouchableOpacity, BackHandler, Platform } from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
 
 import styled from 'styled-components/native';
 import axios from 'axios';
@@ -44,6 +45,15 @@ class App extends React.Component {
     this.goBack = this.goBack.bind(this);
   }
 
+  componentDidMount() {
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.goBack);
+    SplashScreen.hide();
+  }
+
+  componentWillUnmount() {
+    this.backHandler.remove();
+  }
+
   search(phrase) {
     axios.get(`https://images-api.nasa.gov/search?media_type=image&q=${phrase}`).then((response) => {
       this.setState({
@@ -61,18 +71,10 @@ class App extends React.Component {
     return true;
   }
 
-  componentDidMount() {
-    this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.goBack);
-  }
-
-  componentWillUnmount() {
-    this.backHandler.remove();
-  }
-
   render() {
-    StatusBar.setBarStyle('light-content');
     return (
       <React.Fragment>
+        <StatusBar barStyle="light-content" />
         {
           !this.state.isLoaded ? (
             <Hero onSubmit={this.search} />

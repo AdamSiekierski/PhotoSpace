@@ -11,6 +11,7 @@
     "prop-types": "^15.7.2",
     "react": "16.8.3",
     "react-native": "0.59.9",
+    "react-native-splash-screen": "^3.2.0",
     "styled-components": "^4.3.1"
   },
   "devDependencies": {
